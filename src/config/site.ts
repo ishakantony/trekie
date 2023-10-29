@@ -10,5 +10,13 @@ export const siteConfig: SiteConfig = {
       name: "Isaac",
       github: "https://github.com/ishakantony",
     },
+    {
+      name: "Hani",
+      github: "https://github.com/haniZaimal"
+    },
+    {
+      name: "Stephanie",
+      github: "https://github.com/stephanier0"
+    }
   ],
 };

@@ -1,8 +1,10 @@
+import { Icons } from "@/components/ui/icons";
 import { siteConfig } from "@/config/site";
 import { TRPCReactProvider } from "@/trpc/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
+import Link from "next/link";
 import "../styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -45,7 +47,33 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
+        <TRPCReactProvider headers={headers()}>
+          <div className="relative flex min-h-screen flex-col">
+            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <div className="container flex h-14 items-center">Menu</div>
+            </header>
+            {children}
+            <footer className="mt-auto pb-4">
+              <div className="container flex h-16 flex-wrap items-center justify-center md:flex-nowrap [&>*]:mr-4">
+                <span className="flex basis-full items-center justify-center md:basis-auto">
+                  Proudly built with <Icons.love className="mx-1" /> by{" "}
+                </span>
+                {siteConfig.authors.map((author) => (
+                  <Link
+                    className="flex items-center font-medium text-muted-foreground underline underline-offset-4"
+                    key={author.name}
+                    href={author.github}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Icons.github height={15} width={15} className="mr-2" />{" "}
+                    {author.name}
+                  </Link>
+                ))}
+              </div>
+            </footer>
+          </div>
+        </TRPCReactProvider>
       </body>
     </html>
   );
