@@ -18,7 +18,7 @@ export default function Page() {
         We are a team of enthusiastic professionals committed to creating
         user-friendly solutions that transform the way companies handle employee
         leave management. With a deep understanding of the complexities and
-        challenges faced by HR departments, we&aposve developed an application that
+        challenges faced by HR departments, we&apos;ve developed an application that
         optimizes leave tracking and administration, so you can allocate more
         time to strategic HR tasks.
       </p>
@@ -65,9 +65,9 @@ export default function Page() {
       <h1 className="mt-10 text-4xl">Join Us on the Journey</h1>
       <p className="mt-5 text-justify">
         We invite you to join us in reimagining leave management. At Trekie,
-        we&aposre not just offering software; we&aposre offering a partnership that will
+        we&apos;re not just offering software; we&apos;re offering a partnership that will
         help you optimize your HR processes and create a more engaged and
-        productive workforce. Let&aposs embark on this journey to revolutionize how
+        productive workforce. Let&apos;s embark on this journey to revolutionize how
         you manage employee leaves.
       </p>
 
