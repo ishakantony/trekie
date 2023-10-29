@@ -8,28 +8,28 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
+      .enum(["development", "test", "production"])
+      .default("development"),
     POSTGRES_URL: z
-    .string()
-    .url()
-    .refine(
-      (str) => !str.includes("YOUR_PGSQL_URL_HERE"),
-      "You forgot to change the default URL"
-    ),
+      .string()
+      .url()
+      .refine(
+        (str) => !str.includes("YOUR_PGSQL_URL_HERE"),
+        "You forgot to change the default URL",
+      ),
     NEXTAUTH_SECRET:
-    process.env.NODE_ENV === "production"
-      ? z.string()
-      : z.string().optional(),
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
     NEXTAUTH_URL: z.preprocess(
       // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string() : z.string().url()
+      process.env.VERCEL ? z.string() : z.string().url(),
     ),
     GITHUB_ID: z.string(),
-    GITHUB_SECRET: z.string()
+    GITHUB_SECRET: z.string(),
   },
   /*
    * Environment variables available on the client (and server).
@@ -52,6 +52,6 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GITHUB_ID: process.env.GITHUB_ID,
-    GITHUB_SECRET: process.env.GITHUB_SECRET
+    GITHUB_SECRET: process.env.GITHUB_SECRET,
   },
 });

@@ -3,7 +3,7 @@ import {
   pgTableCreator,
   primaryKey,
   text,
-  timestamp
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -20,8 +20,8 @@ export const users = pgTable("user", {
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: text("image")
-})
+  image: text("image"),
+});
 export const accounts = pgTable(
   "account",
   {
@@ -38,29 +38,29 @@ export const accounts = pgTable(
     token_type: text("token_type"),
     scope: text("scope"),
     id_token: text("id_token"),
-    session_state: text("session_state")
+    session_state: text("session_state"),
   },
   (account) => ({
-    compoundKey: primaryKey(account.provider, account.providerAccountId)
-  })
-)
+    compoundKey: primaryKey(account.provider, account.providerAccountId),
+  }),
+);
 
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").notNull().primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  expires: timestamp("expires", { mode: "date" }).notNull()
-})
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
 
 export const verificationTokens = pgTable(
   "verificationToken",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull()
+    expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (vt) => ({
-    compoundKey: primaryKey(vt.identifier, vt.token)
-  })
-)
+    compoundKey: primaryKey(vt.identifier, vt.token),
+  }),
+);

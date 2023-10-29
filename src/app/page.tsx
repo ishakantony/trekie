@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8 md:p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center p-8 md:p-24">
       <Image
         src={"/loading.gif"}
         alt={"Loading Gif"}
@@ -10,7 +10,7 @@ export default function Home() {
         height={150}
       />
       <h1 className="text-8xl leading-normal">Trekie</h1>
-      <p className="md:w-[700px] text-lg text-center">
+      <p className="text-center text-lg md:w-[700px]">
         <span className="font-medium underline underline-offset-4">
           Project tracking made easy
         </span>
