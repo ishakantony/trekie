@@ -3,7 +3,7 @@ export default function Page() {
   return (
     <div
       className="mx-auto mb-20 mt-20 flex max-w-screen-sm flex-col items-center 
-    justify-center p-10 text-lg font-medium"
+    justify-center p-10 text-lg"
     >
       <h1 className="text-4xl">About Trekie</h1>
       <p className="mt-5 text-justify">
