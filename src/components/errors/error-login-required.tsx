@@ -4,7 +4,7 @@ import { Card } from "../ui/card";
 
 export const ErrorLoginRequired = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4">
+    <main className="my-auto flex flex-col items-center justify-center p-4">
       <Card className="w-full p-4 md:w-[500px]">
         <p className="uppercase">Error: 401</p>
         <h1 className="mt-2 text-3xl font-semibold leading-none">
