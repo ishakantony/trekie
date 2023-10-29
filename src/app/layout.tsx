@@ -1,5 +1,6 @@
 import { Footer } from "@/components/navigation/footer";
 import { Header } from "@/components/navigation/header";
+import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
 import { getServerAuthSession } from "@/server/auth";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -57,6 +58,7 @@ export default async function RootLayout({
             <Footer />
           </div>
         </TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );

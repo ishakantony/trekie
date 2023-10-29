@@ -22,6 +22,7 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
 });
+
 export const accounts = pgTable(
   "account",
   {
@@ -64,3 +65,15 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey(vt.identifier, vt.token),
   }),
 );
+
+export const projects = pgTable("project", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  createdByUserId: text("created_by_user_id").notNull(),
+});
+
+export const projectAssignments = pgTable("project_assignment", {
+  projectId: text("project_id").notNull(),
+  userId: text("user_id").notNull(),
+});

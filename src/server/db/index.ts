@@ -3,6 +3,7 @@ import { sql } from "@vercel/postgres";
 import { drizzle as nodePostgresDrizzle } from "drizzle-orm/node-postgres";
 import { drizzle as vercelPostgresDrizzle } from "drizzle-orm/vercel-postgres";
 import { Pool } from "pg";
+import * as schema from "./schema";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const pool = new Pool({
@@ -11,6 +12,6 @@ const pool = new Pool({
 
 export const db =
   env.NODE_ENV === "production"
-    ? vercelPostgresDrizzle(sql)
+    ? vercelPostgresDrizzle(sql, { schema })
     : // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      nodePostgresDrizzle(pool);
+      nodePostgresDrizzle(pool, { schema });
