@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+
+  trekie-db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: trekie
+      POSTGRES_PASSWORD: trekie123
+      POSTGRES_DB: trekie
+    volumes:
+      - trekie-db-data:/var/lib/postgresql/data
+
+volumes:
+  trekie-db-data:
