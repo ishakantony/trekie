@@ -14,4 +14,4 @@ export const db =
   env.NODE_ENV === "production"
     ? vercelPostgresDrizzle(sql, { schema })
     : // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      nodePostgresDrizzle(pool, { schema });
+      nodePostgresDrizzle(pool, { schema, logger: true });

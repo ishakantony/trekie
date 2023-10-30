@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+    networks:
+      - trekie
+
   trekie-db:
     image: postgres:latest
     ports:
@@ -11,6 +18,11 @@ services:
       POSTGRES_DB: trekie
     volumes:
       - trekie-db-data:/var/lib/postgresql/data
+    networks:
+      - trekie
+
+networks:
+  trekie:
 
 volumes:
   trekie-db-data:

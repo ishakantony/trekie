@@ -21,7 +21,7 @@ export const HeaderRight = () => {
           width={25}
           height={25}
         />
-        Trekie
+        <span className="hidden md:block">Trekie</span>
       </Link>
 
       {headerRightItems.map((item) => (

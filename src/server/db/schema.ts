@@ -70,7 +70,7 @@ export const users = pgTable("user", {
 export type SelectUser = InferSelectModel<typeof users>;
 
 export const usersRelations = relations(users, ({ many }) => ({
-  usersToProjects: many(projectsAssignments),
+  assignments: many(projectsAssignments),
 }));
 
 export const projects = pgTable("project", {
@@ -83,7 +83,7 @@ export const projects = pgTable("project", {
 export type SelectProject = InferSelectModel<typeof projects>;
 
 export const projectsRelations = relations(projects, ({ many }) => ({
-  projectsToUsers: many(projectsAssignments),
+  assignments: many(projectsAssignments),
 }));
 
 export const projectsAssignments = pgTable(

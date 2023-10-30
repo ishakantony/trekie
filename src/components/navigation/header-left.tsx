@@ -6,7 +6,10 @@ import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
@@ -20,7 +23,7 @@ export const HeaderLeft = ({ session }: { session: Session | null }) => {
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <span className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
+            <span className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full hover:cursor-pointer">
               <Image
                 className="aspect-square"
                 src={session.user.image ?? ""}
@@ -31,8 +34,21 @@ export const HeaderLeft = ({ session }: { session: Session | null }) => {
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Link href="/me" className="w-full">
+                  Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link className="flex items-center" href="/api/auth/signout">
+              <Link
+                className="flex w-full items-center"
+                href="/api/auth/signout"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </Link>

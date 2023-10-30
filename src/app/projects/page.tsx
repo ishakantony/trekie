@@ -1,27 +1,21 @@
+import { CardProjects } from "@/components/card-projects";
 import { api } from "@/trpc/server";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Projects() {
   const projects = await api.project.all.query();
 
   return (
-    <div className="container mt-4 md:max-w-screen-md md:my-auto">
-      <p className="text-sm mb-4">
+    <div className="container mt-4 md:my-auto md:max-w-screen-md">
+      <p className="mb-4 text-sm">
         Cannot see your project here? Maybe you don&apos;t have one. Let&apos;s{" "}
-        <Link className="underline underline-offset-4" href="/projects/new">create new!</Link>
+        <Link className="underline underline-offset-4" href="/projects/new">
+          create new!
+        </Link>
       </p>
 
       <div className="flex flex-col gap-2">
-      {projects.map((project) => (
-        <Card className="p-2 flex items-center justify-between" key={project.id}>
-          <span className="text-sm font-semibold">{project.name}</span>
-          <Link href={`/projects/${project.slug}`}>
-          <Button>View</Button>
-          </Link>
-        </Card>
-      ))}
+        <CardProjects projects={projects} />
       </div>
     </div>
   );
