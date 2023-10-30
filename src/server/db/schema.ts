@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   integer,
   pgTableCreator,
@@ -14,14 +15,6 @@ import { type AdapterAccount } from "next-auth/adapters";
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const pgTable = pgTableCreator((name) => `trekie_${name}`);
-
-export const users = pgTable("user", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name"),
-  email: text("email").notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: text("image"),
-});
 
 export const accounts = pgTable(
   "account",
@@ -66,6 +59,18 @@ export const verificationTokens = pgTable(
   }),
 );
 
+export const users = pgTable("user", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name"),
+  email: text("email").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  usersToProjects: many(projectsAssignments),
+}));
+
 export const projects = pgTable("project", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
@@ -73,7 +78,35 @@ export const projects = pgTable("project", {
   createdByUserId: text("created_by_user_id").notNull(),
 });
 
-export const projectAssignments = pgTable("project_assignment", {
-  projectId: text("project_id").notNull(),
-  userId: text("user_id").notNull(),
-});
+export const projectsRelations = relations(projects, ({ many }) => ({
+  projectsToUsers: many(projectsAssignments),
+}));
+
+export const projectsAssignments = pgTable(
+  "project_assignment",
+  {
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (t) => ({
+    pk: primaryKey(t.projectId, t.userId),
+  }),
+);
+
+export const projectsAssignmentsRelations = relations(
+  projectsAssignments,
+  ({ one }) => ({
+    project: one(projects, {
+      fields: [projectsAssignments.projectId],
+      references: [projects.id],
+    }),
+    user: one(users, {
+      fields: [projectsAssignments.userId],
+      references: [users.id],
+    }),
+  }),
+);
