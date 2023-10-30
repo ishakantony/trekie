@@ -16,10 +16,18 @@ export const CardProjects = ({
   const router = useRouter();
 
   const deleteProject = api.me.project.delete.useMutation({
-    onError: () => {
+    onError: (error) => {
+      let errorMessage;
+
+      if (error.data?.httpStatus === 403) {
+        errorMessage = error.message;
+      } else {
+        errorMessage =
+          "Something went wrong, please try again. If issue persist, please contact support.";
+      }
+
       toast({
-        title:
-          "Something went wrong, please try again. If issue persist, please contact support.",
+        title: errorMessage,
       });
     },
     onSuccess: () => {
