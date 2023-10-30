@@ -75,8 +75,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const projects = pgTable("project", {
   id: text("id").notNull().primaryKey(),
-  name: text("name").notNull(),
-  slug: text("slug").notNull(),
+  name: text("name").notNull().unique(),
+  slug: text("slug").notNull().unique(),
   createdByUserId: text("created_by_user_id").notNull(),
 });
 

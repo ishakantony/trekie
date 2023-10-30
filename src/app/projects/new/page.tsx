@@ -35,10 +35,16 @@ export default function NewProject() {
   const router = useRouter();
 
   const createProject = api.project.create.useMutation({
-    onError: () => {
+    onError: (error) => {
+      let message =
+        "Something went wrong, please try again. If issue persist, please contact support.";
+
+      if (error.data?.httpStatus === 400) {
+        message = error.message;
+      }
+
       toast({
-        title:
-          "Something went wrong, please try again. If issue persist, please contact support.",
+        title: message,
       });
     },
     onSuccess: () => {

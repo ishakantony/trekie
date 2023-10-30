@@ -1,20 +1,9 @@
 import { projects } from "@/server/db/schema";
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-
-// Function to generate a random alphanumeric string of a given length
-function generateRandomSlug(length: number) {
-  const alphanumericChars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let slug = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * alphanumericChars.length);
-    slug += alphanumericChars[randomIndex];
-  }
-  return slug;
-}
 
 export const projectRouter = createTRPCRouter({
   all: protectedProcedure.query(({ ctx }) => {
@@ -38,17 +27,18 @@ export const projectRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const id = nanoid();
       const projectName = input.name;
+      const slug = projectName.toLowerCase().replace(/\s+/g, "-");
 
-      let slug;
+      // Every project must have unique slug
+      const project = await ctx.db.query.projects.findFirst({
+        where: eq(projects.slug, slug),
+      });
 
-      if (projectName.length <= 10) {
-        // Generate a random slug for project names less than or equal to 10 characters
-        slug = generateRandomSlug(4);
-      } else {
-        // Take the first 5 characters of projectName and add a "-" followed by 4 random alphanumeric characters
-        const truncatedName = projectName.substring(0, 5);
-        const randomPart = generateRandomSlug(4);
-        slug = `${truncatedName}-${randomPart}`;
+      if (project) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Please choose a different name for your project.",
+        });
       }
 
       await ctx.db.insert(projects).values({
