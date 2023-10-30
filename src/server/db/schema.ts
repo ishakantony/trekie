@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferSelectModel } from "drizzle-orm";
 import {
   integer,
   pgTableCreator,
@@ -67,6 +67,8 @@ export const users = pgTable("user", {
   image: text("image"),
 });
 
+export type SelectUser = InferSelectModel<typeof users>;
+
 export const usersRelations = relations(users, ({ many }) => ({
   usersToProjects: many(projectsAssignments),
 }));
@@ -77,6 +79,8 @@ export const projects = pgTable("project", {
   slug: text("slug").notNull(),
   createdByUserId: text("created_by_user_id").notNull(),
 });
+
+export type SelectProject = InferSelectModel<typeof projects>;
 
 export const projectsRelations = relations(projects, ({ many }) => ({
   projectsToUsers: many(projectsAssignments),
