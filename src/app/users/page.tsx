@@ -1,4 +1,4 @@
-import { CardUsers } from "@/components/card-users";
+import { UserList } from "@/components/users/user-list";
 import { api } from "@/trpc/server";
 
 export default async function UsersPage() {
@@ -11,7 +11,7 @@ export default async function UsersPage() {
       </p>
 
       <div className="flex flex-col gap-2">
-        <CardUsers users={users} />
+        <UserList users={users} />
       </div>
     </div>
   );
