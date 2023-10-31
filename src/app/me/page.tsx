@@ -1,35 +1,39 @@
-import { CardProjects } from "@/components/card-projects";
 import { ErrorLoginRequired } from "@/components/errors/error-login-required";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Image from "next/image";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card } from "@/components/ui/card";
+import { RocketIcon } from "lucide-react";
 
 export default async function MePage() {
   const session = await getServerAuthSession();
 
   if (!session) return <ErrorLoginRequired />;
 
-  const myProjects = await api.me.project.createdByMe.query();
+  const projectsCreatedByMe = await api.me.project.createdByMe.query();
+
+  const projectsAssignedToMe = await api.me.project.assignedToMe.query();
 
   const { user } = session;
 
   return (
-    <main className="grow">
-      <div id="profile-picture-background" className="h-[150px] w-full">
-        <Image
-          className="h-full w-full object-cover"
-          src="https://picsum.photos/seed/mountain/1600/300"
-          alt="profile background"
-          width={1600}
-          height={300}
-        />
-      </div>
-      <div id="profile-content" className="md:container">
-        <div
-          id="profile-picture"
-          className="relative flex items-center justify-center md:justify-start"
+    <main className="flex flex-col items-center gap-4 p-4 md:container">
+      <Alert>
+        <RocketIcon className="h-4 w-4" />
+        <AlertTitle>Hi {user.name ?? "there"}!</AlertTitle>
+        <AlertDescription className="text-gray-500">
+          This is where you can get insights about your Trekie account.
+        </AlertDescription>
+      </Alert>
+
+      <div className="flex w-full flex-col items-center gap-4 md:flex-row">
+        <Card
+          id="profile-information"
+          className="flex h-[200px] w-full flex-col items-center justify-between p-4"
         >
-          <div className="absolute flex h-48 w-48 shrink-0 overflow-hidden rounded-full border-4 border-white md:h-36 md:w-36">
+          <div className="flex h-32 w-32 shrink-0 overflow-hidden rounded-full border-4 border-gray-700">
             <Image
               className="aspect-square"
               src={user.image ?? ""}
@@ -38,18 +42,31 @@ export default async function MePage() {
               height={500}
             />
           </div>
-        </div>
-        <div
-          id="personal-information"
-          className="container mt-32 flex flex-col gap-4 md:mt-28"
+
+          <span className="border-b-4 font-semibold">{user.name}</span>
+        </Card>
+
+        <Card
+          id="projects-created"
+          className="flex h-[200px] w-full flex-col items-center justify-between p-4"
         >
-          <h2 className="text-sm">
-            Hey {user.name}, you have created these project(s)
-          </h2>
-          <div className="flex flex-col gap-2">
-            <CardProjects projects={myProjects} />
-          </div>
-        </div>
+          <span className="my-auto text-8xl">{projectsCreatedByMe.length}</span>
+          <p className="mt-2 text-sm uppercase text-gray-500">
+            Projects Created
+          </p>
+        </Card>
+
+        <Card
+          id="projects-assigned"
+          className="flex h-[200px] w-full flex-col items-center justify-between p-4"
+        >
+          <span className="my-auto text-8xl">
+            {projectsAssignedToMe.length}
+          </span>
+          <p className="mt-2 text-sm uppercase text-gray-500">
+            Projects Assigned
+          </p>
+        </Card>
       </div>
     </main>
   );
