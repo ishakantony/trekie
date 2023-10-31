@@ -1,7 +1,13 @@
+import { ErrorLoginRequired } from "@/components/errors/error-login-required";
 import { UserList } from "@/components/users/user-list";
+import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 
 export default async function UsersPage() {
+  const session = await getServerAuthSession();
+
+  if (!session) return <ErrorLoginRequired />;
+
   const users = await api.user.all.query();
 
   return (

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Project tracking made easy, seriously!",
 };
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="my-auto flex flex-col items-center p-4">
       <Image

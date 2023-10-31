@@ -1,4 +1,5 @@
 import { CardProjects } from "@/components/card-projects";
+import { ErrorLoginRequired } from "@/components/errors/error-login-required";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Image from "next/image";
@@ -6,9 +7,11 @@ import Image from "next/image";
 export default async function MePage() {
   const session = await getServerAuthSession();
 
+  if (!session) return <ErrorLoginRequired />;
+
   const myProjects = await api.me.project.createdByMe.query();
 
-  const { user } = session!;
+  const { user } = session;
 
   return (
     <main className="grow">

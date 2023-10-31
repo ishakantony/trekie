@@ -1,8 +1,14 @@
 import { CardProjects } from "@/components/card-projects";
+import { ErrorLoginRequired } from "@/components/errors/error-login-required";
+import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 
-export default async function Projects() {
+export default async function ProjectsPage() {
+  const session = await getServerAuthSession();
+
+  if (!session) return <ErrorLoginRequired />;
+
   const projects = await api.project.all.query();
 
   return (
@@ -20,11 +26,3 @@ export default async function Projects() {
     </div>
   );
 }
-
-// buat ani belajar
-// "use client"
-// import { api } from "@/trpc/react"
-// export default function Project(){
-//     const { data } = api.project.all.useQuery()
-//     return <h1>ANI ANi {JSON.stringify(data)}</h1>
-// }
