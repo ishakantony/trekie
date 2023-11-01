@@ -70,6 +70,68 @@ export const userProjectRouter = createTRPCRouter({
         };
       }
     }),
+
+  remove: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+        userId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Project must exist
+      const project = await ctx.db.query.projects.findFirst({
+        where: eq(projects.id, input.projectId),
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid project for removal",
+        });
+      }
+
+      // User must exist
+      const user = await ctx.db.query.users.findFirst({
+        where: eq(users.id, input.userId),
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid user for removal",
+        });
+      }
+      await ctx.db
+        .delete(projectsAssignments)
+        .where(
+          and(
+            eq(projectsAssignments.projectId, project.id),
+            eq(projectsAssignments.userId, user.id),
+          ),
+        );
+
+      return {
+        message: `Project [${project.name}] has been removed from user [${user.name}]`,
+      };
+    }),
+  
+  assigned: protectedProcedure
+  .input(
+    z.object({
+      userId: z.string().uuid(),
+    }),
+  ).query(async ({ ctx, input }) => {
+    return await ctx.db.select({
+      id: projects.id,
+      name: projects.name,
+      slug: projects.slug,
+      createdByUserId: projects.createdByUserId
+    }).from(projects).innerJoin(
+      projectsAssignments, eq(projects.id, projectsAssignments.projectId))
+      .where(eq(projectsAssignments.userId, input.userId))
+  }),
+
 });
 
 const successfulAssignmentMessage = (

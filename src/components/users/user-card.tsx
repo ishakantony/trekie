@@ -25,8 +25,8 @@ export const UserCard = ({ user }: { user: User }) => {
         <span className="text-sm font-semibold">{name}</span>
       </div>
       <div id="user-card-right">
-        <Link href={`mailto:${user.email}?subject=${emailSubject}`}>
-          <Button>Invite</Button>
+        <Link href={`/users/${user.id}`}>
+          <Button>View</Button>
         </Link>
       </div>
     </Card>
