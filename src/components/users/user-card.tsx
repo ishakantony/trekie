@@ -12,10 +12,6 @@ export const UserCard = ({ user }: { user: User }) => {
       name,
     )}`;
 
-  const emailSubject = encodeURIComponent(
-    `Hi ${user.name}, come join my project on Trekie!`,
-  );
-
   return (
     <Card className="flex items-center justify-between p-4" key={user.id}>
       <div id="user-card-left" className="flex items-center gap-4">
